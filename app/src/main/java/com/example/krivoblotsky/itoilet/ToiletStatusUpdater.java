@@ -11,9 +11,13 @@ import org.json.JSONObject;
  */
 public class ToiletStatusUpdater implements RequestManagerHandler {
 
+    /* Private vars */
     private Context context = null;
     private RequestManager currentRequestManager = null;
     private ToiletStatusUpdaterHandler handler = null;
+
+    /* Content URL */
+    static public String contentUpdateURL = "http://zoomle.demo.alterplay.com/api/";
 
     public ToiletStatusUpdater(Context _context, ToiletStatusUpdaterHandler _handler) {
         context = _context;
@@ -26,7 +30,7 @@ public class ToiletStatusUpdater implements RequestManagerHandler {
 
     public void updateStatus() {
         RequestManager manager = this.requestManager();
-        manager.sendGETRequest("http://zoomle.demo.alterplay.com/api/");
+        manager.sendGETRequest(contentUpdateURL);
     }
 
     /**

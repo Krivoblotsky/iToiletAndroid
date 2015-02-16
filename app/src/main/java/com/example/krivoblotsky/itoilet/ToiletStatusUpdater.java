@@ -17,7 +17,8 @@ public class ToiletStatusUpdater implements RequestManagerHandler {
     private ToiletStatusUpdaterHandler handler = null;
 
     /* Content URL */
-    static public String contentUpdateURL = "http://zoomle.demo.alterplay.com/api/";
+    static public String contentUpdateURL = "http://toilet.demo.alterplay.com";
+    static private String lightStatusKey = "light_status";
 
     public ToiletStatusUpdater(Context _context, ToiletStatusUpdaterHandler _handler) {
         context = _context;
@@ -49,7 +50,19 @@ public class ToiletStatusUpdater implements RequestManagerHandler {
      * */
 
      public void requestCompleted(JSONObject object, String url) {
-        handler.toiletStatusUpdated(ToiletStatus.ToiletStatusFree);
+
+         try {
+
+             boolean busy = object.getBoolean(lightStatusKey);
+             if (busy) {
+                 handler.toiletStatusUpdated(ToiletStatus.ToiletStatusBusy);
+             } else {
+                 handler.toiletStatusUpdated(ToiletStatus.ToiletStatusFree);
+             }
+
+         } catch (Exception e) {
+            handler.toiletStatusUpdated(ToiletStatus.ToiletStausUnavaliable);
+         }
      }
 
      public void requestFailed(VolleyError error, String url) {
